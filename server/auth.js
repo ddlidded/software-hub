@@ -39,6 +39,40 @@ export function createUser({ email, password, displayName }) {
   return { user: { id: info.lastInsertRowid, email: normalized, displayName: name } };
 }
 
+/**
+ * Creates the account defined by ADMIN_EMAIL / ADMIN_PASSWORD on startup so a fresh
+ * deployment is usable without opening signup. Existing accounts are left untouched.
+ */
+export function ensureAdminUser() {
+  const email = process.env.ADMIN_EMAIL;
+  const password = process.env.ADMIN_PASSWORD;
+  if (!email && !password) return null;
+  if (!email || !password) {
+    console.warn("Skipping admin bootstrap: set both ADMIN_EMAIL and ADMIN_PASSWORD.");
+    return null;
+  }
+
+  const invalid = validateCredentials(email, password);
+  if (invalid) {
+    console.warn(`Skipping admin bootstrap: ${invalid}`);
+    return null;
+  }
+
+  const normalized = normalizeEmail(email);
+  if (db.prepare("SELECT id FROM users WHERE email = ?").get(normalized)) {
+    console.log(`Admin account ${normalized} already exists.`);
+    return null;
+  }
+
+  const result = createUser({ email, password, displayName: process.env.ADMIN_NAME });
+  if (result.error) {
+    console.warn(`Skipping admin bootstrap: ${result.error}`);
+    return null;
+  }
+  console.log(`Created admin account ${normalized}.`);
+  return result.user;
+}
+
 export function verifyUser({ email, password }) {
   const row = db.prepare("SELECT * FROM users WHERE email = ?").get(normalizeEmail(email));
   if (!row || !bcrypt.compareSync(String(password || ""), row.password_hash)) {

@@ -49,7 +49,17 @@ Links are scoped to `user_id` on every query, so accounts never see each other's
 
 The repo ships a `Dockerfile` and `docker-compose.yml`. The container listens on 3000 and is published on host port **7480** (unique to this app, so it won't collide with other EasyPanel services).
 
-In EasyPanel: create a project → **Compose** service → point it at this repo → Deploy. Then add a domain mapped to port `7480`.
+In EasyPanel: create a project → **Compose** service → point it at this repo → paste your variables into the **Environment** tab (see `.env.example`) → Deploy. Then add a domain mapped to port `7480`.
+
+Set `ADMIN_EMAIL` and `ADMIN_PASSWORD` there and that account is created on first boot, so you can sign in immediately without using the sign-up form:
+
+```env
+ADMIN_EMAIL=you@example.com
+ADMIN_PASSWORD=a-long-password
+ADMIN_NAME=Edmund
+```
+
+It is only created if no account with that email exists — changing `ADMIN_PASSWORD` later does **not** rewrite the password of an existing account.
 
 Or run it anywhere Docker is installed:
 
@@ -65,6 +75,9 @@ docker compose up -d --build   # http://<host>:7480
 | `DATA_DIR` | `/data` | SQLite lives here; backed by the `hub-data` volume |
 | `COOKIE_SECURE` | `true` | Set to `false` if you reach the app over plain HTTP without TLS in front, otherwise sign-in cookies are dropped |
 | `TRUST_PROXY` | `1` | Number of proxy hops to trust (EasyPanel's Traefik counts as one) |
+| `ADMIN_EMAIL` | — | First account's email; created on startup when set together with `ADMIN_PASSWORD` |
+| `ADMIN_PASSWORD` | — | First account's password (at least 8 characters) |
+| `ADMIN_NAME` | email prefix | Display name for the first account |
 
 `/api/health` backs the compose healthcheck. The `hub-data` volume keeps accounts and links across redeploys.
 

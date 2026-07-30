@@ -11,6 +11,10 @@ services:
       # Set to false only if you reach the app over plain HTTP (no TLS in front of it).
       COOKIE_SECURE: ${COOKIE_SECURE:-true}
       TRUST_PROXY: ${TRUST_PROXY:-1}
+      # First account, created on startup if it does not exist yet (min 8 char password).
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      ADMIN_NAME: ${ADMIN_NAME:-}
     ports:
       # Host port 7480 is unique to this app; EasyPanel proxies its domain to it.
       - "${HUB_PORT:-7480}:3000"

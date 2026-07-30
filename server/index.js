@@ -7,6 +7,7 @@ import {
   attachUser,
   createUser,
   endSession,
+  ensureAdminUser,
   requireUser,
   startSession,
   validateCredentials,
@@ -111,6 +112,8 @@ app.delete("/api/links/:id", requireUser, (req, res) => {
 });
 
 app.use(express.static(path.join(__dirname, "..", "public")));
+
+ensureAdminUser();
 
 const port = Number(process.env.PORT) || 3000;
 app.listen(port, "0.0.0.0", () => {
