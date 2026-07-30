@@ -1,14 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import Database from "better-sqlite3";
+import { DatabaseSync } from "node:sqlite";
 import { SEED_LINKS } from "./seed-links.js";
 
 const dataDir = process.env.DATA_DIR || path.join(process.cwd(), "data");
 fs.mkdirSync(dataDir, { recursive: true });
 
-export const db = new Database(path.join(dataDir, "hub.db"));
-db.pragma("journal_mode = WAL");
-db.pragma("foreign_keys = ON");
+export const db = new DatabaseSync(path.join(dataDir, "hub.db"));
+db.exec("PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;");
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
@@ -45,8 +44,15 @@ const insertLink = db.prepare(
    VALUES (@user_id, @category, @name, @url, @description, @position)`
 );
 
-export const seedLinksForUser = db.transaction((userId) => {
-  SEED_LINKS.forEach((link, index) => {
-    insertLink.run({ user_id: userId, position: index, description: "", ...link });
-  });
-});
+export function seedLinksForUser(userId) {
+  db.exec("BEGIN");
+  try {
+    SEED_LINKS.forEach((link, index) => {
+      insertLink.run({ user_id: userId, position: index, description: "", ...link });
+    });
+    db.exec("COMMIT");
+  } catch (error) {
+    db.exec("ROLLBACK");
+    throw error;
+  }
+}

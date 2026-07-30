@@ -9,13 +9,13 @@ npm install
 npm start        # http://localhost:3000
 ```
 
-`npm run dev` restarts on file changes. Data lives in `data/hub.db` (SQLite, created on first run; override the location with `DATA_DIR`).
+Needs Node 22.5+ — storage uses Node's built-in `node:sqlite`, so there is no native module to compile (installs and Docker builds take seconds). `npm run dev` restarts on file changes. Data lives in `data/hub.db` (SQLite, created on first run; override the location with `DATA_DIR`).
 
 ## How it works
 
 - `server/index.js` — Express API + static file server
 - `server/auth.js` — bcrypt password hashing, opaque session IDs in an httpOnly cookie (30 days)
-- `server/db.js` — SQLite schema (`users`, `sessions`, `links`) and per-user seeding
+- `server/db.js` — SQLite schema (`users`, `sessions`, `links`) and per-user seeding, via built-in `node:sqlite`
 - `server/seed-links.js` — the starter links every new account gets
 - `public/` — the UI (no framework, no build step)
 
