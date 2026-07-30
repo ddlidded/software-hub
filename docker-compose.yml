@@ -1,0 +1,27 @@
+services:
+  hub:
+    build: .
+    image: isotopiq-hub:latest
+    container_name: isotopiq-hub
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATA_DIR: /data
+      # Set to false only if you reach the app over plain HTTP (no TLS in front of it).
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
+      TRUST_PROXY: ${TRUST_PROXY:-1}
+    ports:
+      # Host port 7480 is unique to this app; EasyPanel proxies its domain to it.
+      - "${HUB_PORT:-7480}:3000"
+    volumes:
+      - hub-data:/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  hub-data:

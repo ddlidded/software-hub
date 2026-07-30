@@ -28,6 +28,7 @@ Links are scoped to `user_id` on every query, so accounts never see each other's
 | POST | `/api/auth/signup` | Create an account and sign in |
 | POST | `/api/auth/login` | Sign in |
 | POST | `/api/auth/logout` | End the session |
+| GET | `/api/health` | Liveness probe for Docker / EasyPanel |
 | GET | `/api/me` | Current user, or `null` |
 | GET | `/api/links` | Your links |
 | POST | `/api/links` | Add a link |
@@ -44,6 +45,29 @@ Links are scoped to `user_id` on every query, so accounts never see each other's
 - Dark / light theme toggle on both the sign-in screen and the hub, remembered per browser and defaulting to your OS preference
 - Keyboard: `/` focuses search, `Enter` opens the top result, `Esc` clears or closes settings
 
-## Deploy
+## Deploy with EasyPanel (Docker Compose)
+
+The repo ships a `Dockerfile` and `docker-compose.yml`. The container listens on 3000 and is published on host port **7480** (unique to this app, so it won't collide with other EasyPanel services).
+
+In EasyPanel: create a project → **Compose** service → point it at this repo → Deploy. Then add a domain mapped to port `7480`.
+
+Or run it anywhere Docker is installed:
+
+```bash
+docker compose up -d --build   # http://<host>:7480
+```
+
+### Environment
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `HUB_PORT` | `7480` | Host port published by compose |
+| `DATA_DIR` | `/data` | SQLite lives here; backed by the `hub-data` volume |
+| `COOKIE_SECURE` | `true` | Set to `false` if you reach the app over plain HTTP without TLS in front, otherwise sign-in cookies are dropped |
+| `TRUST_PROXY` | `1` | Number of proxy hops to trust (EasyPanel's Traefik counts as one) |
+
+`/api/health` backs the compose healthcheck. The `hub-data` volume keeps accounts and links across redeploys.
+
+## Other hosts
 
 Any Node host works (Railway, Render, Fly.io). Set `NODE_ENV=production` so the session cookie is marked `Secure`, and mount a persistent volume at `DATA_DIR` so the SQLite file survives restarts. GitHub Pages cannot host this — it needs a server.

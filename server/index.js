@@ -16,6 +16,8 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
+if (process.env.TRUST_PROXY) app.set("trust proxy", Number(process.env.TRUST_PROXY) || process.env.TRUST_PROXY);
+
 app.use(express.json({ limit: "64kb" }));
 app.use(cookieParser());
 app.use(attachUser);
@@ -59,6 +61,10 @@ app.post("/api/auth/login", (req, res) => {
 
 app.post("/api/auth/logout", (req, res) => {
   endSession(req, res);
+  res.json({ ok: true });
+});
+
+app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
 
@@ -107,6 +113,6 @@ app.delete("/api/links/:id", requireUser, (req, res) => {
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 const port = Number(process.env.PORT) || 3000;
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Hub running on http://localhost:${port}`);
 });

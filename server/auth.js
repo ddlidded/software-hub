@@ -8,7 +8,9 @@ const SESSION_DAYS = 30;
 const cookieOptions = {
   httpOnly: true,
   sameSite: "lax",
-  secure: process.env.NODE_ENV === "production",
+  secure: process.env.COOKIE_SECURE
+    ? process.env.COOKIE_SECURE !== "false"
+    : process.env.NODE_ENV === "production",
   maxAge: SESSION_DAYS * 24 * 60 * 60 * 1000,
   path: "/",
 };
