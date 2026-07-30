@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Hub</title>
+<title>Isotopiq Hub</title>
 <meta name="description" content="A private hub for all your software links." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E" />
+<link rel="icon" type="image/png" href="assets/isotopiq-mark.png" />
+<meta name="theme-color" content="#262262" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -20,8 +21,15 @@
 
   <!-- Sign in / sign up gate -->
   <div class="gate" id="gate" hidden>
+    <button class="icon-btn gate-theme" id="theme-toggle-gate" type="button" aria-label="Toggle color theme">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z"/></svg>
+    </button>
     <div class="panel auth-card">
-      <div class="brand gate-brand"><span class="brand-mark">⚡</span><span class="brand-name">Hub</span></div>
+      <div class="brand gate-brand">
+        <img class="logo-light" src="assets/isotopiq-logo.png" alt="Isotopiq" />
+        <img class="logo-dark" src="assets/isotopiq-logo-dark.png" alt="Isotopiq" />
+      </div>
       <h2 id="auth-heading">Welcome back</h2>
       <p class="auth-sub" id="auth-sub">Sign in to see your links.</p>
 
@@ -53,8 +61,8 @@
   <div id="app" hidden>
     <header class="topbar">
       <div class="brand">
-        <span class="brand-mark">⚡</span>
-        <span class="brand-name">Hub</span>
+        <img class="logo-light" src="assets/isotopiq-logo.png" alt="Isotopiq" />
+        <img class="logo-dark" src="assets/isotopiq-logo-dark.png" alt="Isotopiq" />
       </div>
       <div class="topbar-actions">
         <span class="who" id="who"></span>

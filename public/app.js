@@ -17,6 +17,7 @@ const ui = {
   who: el("who"),
   logout: el("logout"),
   theme: el("theme-toggle"),
+  themeGate: el("theme-toggle-gate"),
   title: el("title"),
   search: el("search"),
   filters: el("filters"),
@@ -368,7 +369,7 @@ async function enterApp(user) {
   state.links = links;
   ui.who.textContent = user.displayName;
   ui.title.textContent = `${user.displayName}'s Hub`;
-  document.title = `${user.displayName}'s Hub`;
+  document.title = `Isotopiq Hub · ${user.displayName}`;
   ui.gate.hidden = true;
   ui.app.hidden = false;
   refreshAll();
@@ -378,12 +379,20 @@ async function enterApp(user) {
 
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#0b0a20" : "#f4f7fd");
   localStorage.setItem("hub-theme", theme);
 }
 
-ui.theme.addEventListener("click", () => {
+function preferredTheme() {
+  return localStorage.getItem("hub-theme") || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+}
+
+function toggleTheme() {
   applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
-});
+}
+
+ui.theme.addEventListener("click", toggleTheme);
+ui.themeGate.addEventListener("click", toggleTheme);
 
 ui.search.addEventListener("input", (event) => {
   state.query = event.target.value;
@@ -416,7 +425,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 async function boot() {
-  applyTheme(localStorage.getItem("hub-theme") || "dark");
+  applyTheme(preferredTheme());
   setMode("login");
   try {
     const { user } = await api("/api/me");

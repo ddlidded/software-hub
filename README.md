@@ -1,4 +1,4 @@
-# Software Hub
+# Isotopiq Hub
 
 A private, password-protected hub for every tool you use. Sign in, and your links are yours alone — add, edit, and delete them from the in-app settings drawer.
 
@@ -40,7 +40,8 @@ Links are scoped to `user_id` on every query, so accounts never see each other's
 - Settings drawer to add / edit / delete links with categories and descriptions
 - Instant search across names, descriptions, hostnames, and categories
 - Category filter chips, auto-fetched favicons
-- Dark / light theme, remembered per browser
+- Isotopiq branding (navy `#262262` / blue `#2787e7`) with light and dark logo variants in `public/assets/`
+- Dark / light theme toggle on both the sign-in screen and the hub, remembered per browser and defaulting to your OS preference
 - Keyboard: `/` focuses search, `Enter` opens the top result, `Esc` clears or closes settings
 
 ## Deploy

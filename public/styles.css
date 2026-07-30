@@ -1,35 +1,39 @@
+/* Isotopiq brand: navy #262262, blue #2787e7 */
 :root {
-  --bg: #07070c;
-  --fg: #f2f3f7;
-  --muted: #9aa0b4;
-  --card: rgba(255, 255, 255, 0.045);
-  --card-hover: rgba(255, 255, 255, 0.085);
-  --stroke: rgba(255, 255, 255, 0.09);
-  --stroke-strong: rgba(255, 255, 255, 0.2);
-  --accent: #7c8cff;
-  --accent-2: #22d3ee;
-  --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  --blob-1: #4f46e5;
-  --blob-2: #0ea5e9;
-  --blob-3: #db2777;
-  --blob-opacity: 0.5;
+  --navy: #262262;
+  --brand-blue: #2787e7;
+
+  --bg: #0b0a20;
+  --fg: #eef1fa;
+  --muted: #9ba3c7;
+  --card: rgba(255, 255, 255, 0.05);
+  --card-hover: rgba(255, 255, 255, 0.095);
+  --stroke: rgba(255, 255, 255, 0.1);
+  --stroke-strong: rgba(126, 176, 245, 0.42);
+  --accent: #2787e7;
+  --accent-2: #6fb4f8;
+  --shadow: 0 24px 60px rgba(4, 3, 20, 0.6);
+  --blob-1: #262262;
+  --blob-2: #2787e7;
+  --blob-3: #1b3f9c;
+  --blob-opacity: 0.62;
 }
 
 [data-theme="light"] {
-  --bg: #f6f7fb;
-  --fg: #15171f;
-  --muted: #5b6172;
-  --card: rgba(255, 255, 255, 0.72);
+  --bg: #f4f7fd;
+  --fg: #1b1a3d;
+  --muted: #5d6489;
+  --card: rgba(255, 255, 255, 0.78);
   --card-hover: #ffffff;
-  --stroke: rgba(20, 22, 33, 0.08);
-  --stroke-strong: rgba(20, 22, 33, 0.18);
-  --accent: #4f46e5;
-  --accent-2: #0891b2;
-  --shadow: 0 20px 45px rgba(20, 25, 60, 0.12);
-  --blob-1: #a5b4fc;
-  --blob-2: #7dd3fc;
-  --blob-3: #f9a8d4;
-  --blob-opacity: 0.65;
+  --stroke: rgba(38, 34, 98, 0.1);
+  --stroke-strong: rgba(39, 135, 231, 0.42);
+  --accent: #1f6fd0;
+  --accent-2: #262262;
+  --shadow: 0 20px 45px rgba(38, 34, 98, 0.13);
+  --blob-1: #b9d4f8;
+  --blob-2: #8fc0f7;
+  --blob-3: #c9c7e8;
+  --blob-opacity: 0.7;
 }
 
 * { box-sizing: border-box; }
@@ -86,9 +90,9 @@ body {
   padding: 22px clamp(18px, 5vw, 56px);
 }
 
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; }
-.brand-mark { font-size: 20px; }
-.brand-name { font-size: 17px; }
+.brand { display: flex; align-items: center; }
+.brand img { height: 30px; width: auto; display: block; }
+[data-theme="dark"] .logo-light, [data-theme="light"] .logo-dark { display: none; }
 
 .icon-btn {
   display: grid;
@@ -432,7 +436,8 @@ kbd {
   padding: 32px 30px 26px;
   animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
-.gate-brand { justify-content: flex-start; margin-bottom: 22px; }
+.gate-brand { justify-content: flex-start; margin-bottom: 24px; }
+.gate-brand img { height: 34px; }
 .auth-card h2 { margin: 0; font-size: 26px; letter-spacing: -0.03em; }
 .auth-sub { margin: 8px 0 24px; color: var(--muted); font-size: 14px; }
 .auth-switch { margin: 20px 0 0; text-align: center; font-size: 13.5px; color: var(--muted); }
@@ -508,3 +513,5 @@ kbd {
   .link-form .row { grid-template-columns: 1fr; }
   .who { display: none; }
 }
+
+.gate-theme { position: absolute; top: 22px; right: clamp(18px, 5vw, 56px); }
