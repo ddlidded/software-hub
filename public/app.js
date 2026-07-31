@@ -99,17 +99,31 @@ function cardEl(link, index) {
 
   const logo = document.createElement("span");
   logo.className = "logo";
-  logo.textContent = link.name.charAt(0).toUpperCase();
+  const fallback = document.createElement("span");
+  fallback.textContent = link.name.charAt(0).toUpperCase();
+  logo.appendChild(fallback);
+
   const host = hostOf(link.url);
   if (host) {
     const img = document.createElement("img");
-    img.src = `https://www.google.com/s2/favicons?domain=${host}&sz=64`;
+    const sources = [
+      `https://${host}/favicon.ico`,
+      `https://icons.duckduckgo.com/ip3/${host}.ico`,
+      `https://www.google.com/s2/favicons?domain=${host}&sz=64`,
+    ];
+    let sourceIndex = 0;
     img.alt = "";
     img.loading = "lazy";
+    img.referrerPolicy = "no-referrer";
     img.addEventListener("load", () => {
-      logo.textContent = "";
+      fallback.remove();
       logo.appendChild(img);
     });
+    img.addEventListener("error", () => {
+      sourceIndex += 1;
+      if (sourceIndex < sources.length) img.src = sources[sourceIndex];
+    });
+    img.src = sources[sourceIndex];
   }
 
   const meta = document.createElement("span");
