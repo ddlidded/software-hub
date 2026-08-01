@@ -115,13 +115,18 @@ function cardEl(link, index) {
     img.alt = "";
     img.loading = "lazy";
     img.referrerPolicy = "no-referrer";
+    logo.appendChild(img);
     img.addEventListener("load", () => {
+      img.classList.add("loaded");
       fallback.remove();
-      logo.appendChild(img);
     });
     img.addEventListener("error", () => {
       sourceIndex += 1;
-      if (sourceIndex < sources.length) img.src = sources[sourceIndex];
+      if (sourceIndex < sources.length) {
+        img.src = sources[sourceIndex];
+      } else {
+        img.remove();
+      }
     });
     img.src = sources[sourceIndex];
   }
