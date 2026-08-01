@@ -113,7 +113,7 @@ function cardEl(link, index) {
     ];
     let sourceIndex = 0;
     img.alt = "";
-    img.loading = "lazy";
+    img.loading = "eager";
     img.referrerPolicy = "no-referrer";
     img.addEventListener("load", () => {
       fallback.remove();
